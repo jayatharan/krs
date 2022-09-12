@@ -13,7 +13,7 @@ import CheckoutForm from './components/checkoutForm/CheckoutForm';
 
 const CartTitleText = styled(Typography)`
     font-weight:500;
-    font-size:20px;
+    font-size:25px;
     line-height:30px;
     text-align:center;
     font-weight:900;
