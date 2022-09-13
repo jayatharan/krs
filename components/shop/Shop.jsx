@@ -21,6 +21,7 @@ const Shop = ({categoryId}) => {
     const [filter, setFilter] = useState({
         subCategoryIds:[]
     })
+    const [empty, setEmpty] = useState(false);
 
     const handleFilterChange = (data)=>{
         setFilter(data);
@@ -34,6 +35,9 @@ const Shop = ({categoryId}) => {
                 if(page === 1){
                     setProducts(response.data);
                 }else{
+                    if(response.data.length == 0){
+                        setEmpty(true);
+                    }
                     setProducts((prev)=>([...prev, ...response.data]));
                 }
             })
@@ -52,7 +56,7 @@ const Shop = ({categoryId}) => {
                         </Grid>
                     ))}
                 </Grid>
-                {products.length>0&&(
+                {(!empty && products.length>0)&&(
                     <Box sx={{display:'flex', justifyContent:'flex-end', marginTop:1}}>
                         <Button disabled={loading} onClick={()=>setPage(page+1)}>Load More</Button>
                     </Box>

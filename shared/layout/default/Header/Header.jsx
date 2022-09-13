@@ -16,6 +16,7 @@ import Cart from '../../../../components/cart/Cart';
 import {useRecoilState} from "recoil";
 import { HeaderMenuData } from '../../../../recoil/headerData/HeaderMenuDataAtom';
 import Menu from '../../../../components/menu/Menu';
+import { useEffect } from 'react';
 
 const CustomAppBar = styled(AppBar)`
     &&{
@@ -48,10 +49,18 @@ const Header = () => {
     const authContext = useContext(AuthContext);
     const router = useRouter()
     const [currMenu, setCurrMenu] = useRecoilState(HeaderMenuData);
+    const [key, setKey] = useState('')
 
     const toggleDrawer = (type)=> {
         setCurrMenu(type);
     }
+
+    useEffect(()=>{
+        const paths = router.pathname.split('/')
+        if (paths.length > 1) {
+            setKey(paths[1])
+        }
+    },[router])
 
     return (
         <>
@@ -73,16 +82,24 @@ const Header = () => {
                     <IconButton onClick={()=>setCurrMenu('')} sx={{position:'absolute', top:'3px'}}>
                         <BackIcon />
                     </IconButton>
-                    <Cart />
+                    <Box sx={{width:{xs:'300px', sm:'400px', md:'400px', lg:'400px', xl:'400px'},background:COLORS.primary.white, padding:1}}>
+                        <Cart />
+                    </Box>
                 </Box>
             </SwipeableDrawer>
             <CustomAppBar>
                 <Container maxWidth={'xl'} sx={{ display: {xs:'none', md:'flex'}, alignItems: 'center', height: '100%', justifyContent: 'center', position:'relative' }}>
                     <Typography sx={{position:'absolute', left:'100px'}}>LOGO</Typography>
                     <Box sx={{display:'flex', alignItems:'center'}}>
-                        <NavLink style={styleNavActive} onClick={() => router.push(`/`)}>HOME</NavLink>
+                        <NavLink style={key === '' ? styleNavActive : undefined} onClick={() => router.push(`/`)}>HOME</NavLink>
                         <NavLink>ABOUT US</NavLink>
                         <NavLink>BLOG</NavLink>
+                        {!authContext.auth.authenticated&&(
+                            <>
+                                <NavLink style={key === 'login' ? styleNavActive : undefined} onClick={() => router.push(`/login`)}>LOGIN</NavLink>
+                                <NavLink style={key === 'sign-up' ? styleNavActive : undefined} onClick={() => router.push(`/sign-up`)}>SIGN UP</NavLink>
+                            </>
+                        )}
                     </Box>
                     <IconButton sx={{position:'absolute', right:'100px'}} onClick={()=>toggleDrawer('cart')}>
                         <Badge badgeContent={authContext.order?authContext.order.cartItems.length:0} color={'warning'}>

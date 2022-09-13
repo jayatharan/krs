@@ -10,6 +10,11 @@ import { CartIcon, ConfirmIcon, RightIcon } from '../../shared/Icons';
 import { Button } from '../../shared/Button';
 import { Collapse } from '../../shared/Collapse';
 import CheckoutForm from './components/checkoutForm/CheckoutForm';
+import { useRouter } from 'next/router';
+import { HeaderMenuData } from '../../recoil/headerData/HeaderMenuDataAtom';
+import {useRecoilState} from "recoil";
+import { CurrencyFormatter } from '../../utils/StringProcess';
+import { useEffect } from 'react';
 
 const CartTitleText = styled(Typography)`
     font-weight:500;
@@ -20,12 +25,50 @@ const CartTitleText = styled(Typography)`
     color:${COLORS.primary.brown};
 `
 
-const Cart = () => {
+const CartTotalContainer = styled(Box)`
+    margin-bottom:15px;
+    background:${COLORS.primary.white};
+    padding:5px;
+    box-shadow:2px 4px 8px rgba(30, 30, 30, 0.18);
+`
+
+const CartTotalText = styled(Typography)`
+    margin-top:5px;
+    font-weight:600;
+    font-size:16px;
+    line-height:20px;
+    color:${COLORS.primary.black};
+`
+
+const Cart = ({checkout=false}) => {
     const authContext = useContext(AuthContext);
     const [confirmOrder, setConfirmOrder] = useState(false)
+    const router = useRouter()
+    const [currMenu, setCurrMenu] = useRecoilState(HeaderMenuData);
+    const [total, setTotal] = useState({
+        quantity:0,
+        amount:0
+    })
+    
+    useEffect(()=>{
+        let quantity = 0
+        let amount = 0
+
+        if(authContext.order){
+            authContext.order.cartItems.map(i => {
+                quantity += i.quantity
+                amount += (i.quantity*i.price)
+            })
+        }
+
+        setTotal({
+            quantity, 
+            amount
+        })
+    },[authContext])
 
     return (
-        <Box sx={{width:{xs:'300px', sm:'400px', md:'400px', lg:'400px', xl:'400px'},background:COLORS.primary.white, padding:1}}>
+        <Box>
             <Box sx={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                 <CartIcon />
                 <CartTitleText>SHOPPING CART</CartTitleText>
@@ -37,15 +80,16 @@ const Cart = () => {
                         {authContext.order.cartItems.map(i=>(
                             <CartItem key={i._id} cartItem={i} confirmOrder={confirmOrder} />
                         ))}
-                        {(!confirmOrder)&&(
-                            <Button variant='outlined' disabled={authContext.order.cartItems.length==0} sx={{paddingY:1}} fullWidth={true} endIcon={<ConfirmIcon />} onClick={()=>setConfirmOrder(true)}>Confirm Order</Button>
+                        <CartTotalContainer>
+                            <CartTotalText>Total Qty : {total.quantity}</CartTotalText>
+                            <CartTotalText>Total : {CurrencyFormatter.format(total.amount)}</CartTotalText>
+                        </CartTotalContainer>
+                        {(!checkout && !confirmOrder)&&(
+                            <Button variant='outlined' disabled={authContext.order.cartItems.length==0} sx={{paddingY:1}} fullWidth={true} endIcon={<ConfirmIcon />} onClick={()=>{router.push('/checkout'); setCurrMenu('')}}>Confirm Order</Button>
                         )}
                     </>
                 )}
             </Box>
-            <Collapse in={confirmOrder}>
-                <CheckoutForm />
-            </Collapse>
         </Box>
     )
 }

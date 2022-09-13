@@ -7,7 +7,7 @@ import { Typography } from '../../../shared/Typography';
 import { Divider } from '@mui/material';
 import { Collapse } from '../../../shared/Collapse';
 import { Button, IconButton } from '../../../shared/Button';
-import { AddIcon, BuyCloseIcon, LeftIcon, MinusIcon, RightIcon } from '../../../shared/Icons';
+import { AddIcon, BuyCloseIcon, LeftIcon, MinusIcon, RemoveIcon, RightIcon } from '../../../shared/Icons';
 import OrderApi from '../../../apis/OrderApi';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { CurrencyFormatter } from '../../../utils/StringProcess';
@@ -84,7 +84,7 @@ const CartItem = ({cartItem, confirmOrder}) => {
                 <CartItemActionBox sx={{position:'absolute', right:'0px', zIndex:999}} onClick={()=>{if(!showActionButtons)setShowActionButtons(true)}}>
                     <Collapse in={showActionButtons} orientation='horizontal'>
                         <Box sx={{padding:1}}>
-                            <Button variant='contained' size='small' color='error' onClick={()=>cartItemAction('remove')}>Remove</Button>
+                            {/* <Button variant='contained' size='small' color='error' onClick={()=>cartItemAction('remove')}>Remove</Button>
                             <Box sx={{width:'100%', display:'flex', justifyContent:'space-between'}}>
                                 <IconButton size='small' onClick={()=>cartItemAction('plus')}>
                                     <AddIcon />
@@ -92,11 +92,20 @@ const CartItem = ({cartItem, confirmOrder}) => {
                                 <IconButton size='small' onClick={()=>cartItemAction('minus')}>
                                     <MinusIcon />
                                 </IconButton>
+                            </Box> */}
+                            <Box sx={{display:'flex', flexDirection:'column'}}>
+                                <Button size='small' variant='outlined' color='success' sx={{marginBottom:0.5}} onClick={()=>cartItemAction('plus')}><AddIcon /></Button>
+                                <Button size='small' variant='outlined' color='warning' onClick={()=>cartItemAction('minus')}><MinusIcon /></Button>
                             </Box>
                             {showActionButtons&&(
-                                <IconButton size='small' onClick={()=>setShowActionButtons(false)}>
-                                    <RightIcon />
-                                </IconButton>
+                                <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                                    <IconButton size='small' onClick={()=>cartItemAction('remove')}>
+                                        <RemoveIcon />
+                                    </IconButton>
+                                        <IconButton size='small' onClick={()=>setShowActionButtons(false)}>
+                                            <RightIcon />
+                                        </IconButton>
+                                </Box>
                             )}
                         </Box>
                     </Collapse>

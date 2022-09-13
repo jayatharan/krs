@@ -33,15 +33,35 @@ const AdditionalChargeSchema = new Schema({
     }
 })
 
+const AddressSchema = new Schema({
+    address:String,
+    contact:String,
+    latitude:Number,
+    longitude:Number,
+    geo:{
+        type:Boolean,
+        default:false
+    }
+})
+
 const OrderSchema = new Schema({
     cartItems:{
         type:[CartItemSchema],
         default:[]
     },
     mobile:String,
+    address:{
+        type:AddressSchema,
+        default:{}
+    },
+    request:String,
+    notes:String,
     deliveryCharge:{
         type:Number,
         default:0
+    },
+    deliveryDate:{
+        type:Date
     },
     discount:{
         type:Number,

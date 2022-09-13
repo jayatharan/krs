@@ -14,6 +14,16 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import CloseIcon from '@mui/icons-material/Close';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import InfoIcon from '@mui/icons-material/Info';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { COLORS } from '../application/constants/AppConstants';
+
+export const RemoveIcon = styled(DeleteIcon)`
+color:${COLORS.secondary.red};
+`;
 
 export const SearchCloseIcon = styled(CloseIcon)`
     color:red
@@ -22,6 +32,20 @@ export const SearchCloseIcon = styled(CloseIcon)`
 export const FilterIcon = styled(FilterAltOutlinedIcon)`
 color:#3C1404;
 `
+export const MenuAboutIcon = styled(InfoIcon)`
+    color:#3C1404;
+    font-size:25px;
+`;
+
+export const MenuSignUpIcon = styled(PersonAddAltIcon)`
+    color:#3C1404;
+    font-size:25px;
+`;
+
+export const MenuLoginIcon = styled(LoginIcon)`
+    color:#3C1404;
+    font-size:25px;
+`;
 
 export const MenuBlogIcon = styled(RssFeedIcon)`
     color:#3C1404;

@@ -1,6 +1,7 @@
 import { HttpMethods } from "../application/constants/HttpMethods";
 import axiosInstance from "./AxiosInstance";
 import { refreshAccessToken } from '../auth/AuthService';
+import { getCookie } from "../utils/CookieAccess";
 
 export default class BaseApi {
 
@@ -49,28 +50,15 @@ export default class BaseApi {
         data=undefined,
     ) {
         let retry = false;
-        let axiosPromise = null
-        try{
-            axiosPromise = await axiosInstance.request({
-                method: method,
-                url: endPoint,
-                params: queryStringParameters,
-                data: data,
-            });
-        }catch (error){
-            if(error && error.response && (error.response.status == 401 || error.response.status == 403)){
-                retry = true;
-                const result = await refreshAccessToken();
-                if (result) {
-                    axiosPromise = await axiosInstance.request({
-                        method: method,
-                        url: endPoint,
-                        params: queryStringParameters,
-                        data: data,
-                    });
-                }
-            }
-        }
+        const accessToken = getCookie('access-token');
+        if(!accessToken) await refreshAccessToken();
+        
+        const axiosPromise = await axiosInstance.request({
+            method: method,
+            url: endPoint,
+            params: queryStringParameters,
+            data: data,
+        })
 
         return axiosPromise.data;
     }

@@ -25,6 +25,10 @@ async function handler(req, res) {
                 else{
                     throw new Error("Not Found");
                 }
+                if(data.request != undefined) order.request = data.request;
+                if(data.deliveryDate != undefined) {
+                    order.deliveryDate = data.deliveryDate
+                }
                 await order.save()
                 res.status(200).json({ success: true, data: order })
             } catch (error) {

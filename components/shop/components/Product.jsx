@@ -109,7 +109,7 @@ const Product = ({product}) => {
                             <Box sx={{display:'flex', justifyContent:'flex-end'}}>
                                 <IconButton onClick={()=>setShowActionButtons(false)}><BuyCloseIcon /></IconButton>
                             </Box>
-                            <Button disabled={loading} variant='outlined' color='warning' size='small' sx={{marginBottom:1}} onClick={()=>{router.push(`/shop/${product.categoryId}/product/${product._id}`)}}>View</Button>
+                            <Button disabled={loading} variant='outlined' color='warning' size='small' sx={{marginBottom:1}} onClick={()=>{router.push(`/shop/${product.categoryId}/product/${product._id}`); setLoading(true)}}>View</Button>
                             <Button disabled={loading} variant='contained' color='success' size='small' onClick={addToCart} >Add to Cart</Button>
                         </Box>
                     </Collapse>

@@ -11,6 +11,12 @@ export default async function handler(req, res) {
         case 'POST':
             try{
                 const data = req.body
+                if(data.mobile){
+                    const existingUser = await User.findOne({mobile:data.mobile});
+                    if(existingUser){
+                        res.status(400).json({ success: false, message:'Mobile No already exist' })
+                    }
+                }
                 const salt = await bcrypt.genSalt(10)
                 data.password = await bcrypt.hashSync(data.password, salt);
                 const user = await User.create(data)

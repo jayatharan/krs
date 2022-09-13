@@ -1,25 +1,25 @@
 import React, {useContext, useEffect} from 'react'
 import { AuthContext } from './AuthProvider';
-import UserApi from '../apis/UserApi';
+import AuthApi from '../apis/AuthApi';
 
 const useLoadUserDetails = () => {
     const authContext = useContext(AuthContext);
 
     const loadUserDetails = ()=>{
-        authContext?.setAuth({
+        authContext.setAuth({
             loading:true,
             authenticated:false
         })
-        UserApi.getUserDetails().then((response)=>{
-            authContext?.setAuth({
+        AuthApi.user().then((response)=>{
+                authContext?.setAuth({
                 loading:false,
                 authenticated:true,
-                userDetails:response.data.user
+                user:response.data.user
             })
-        }).catch((error)=>{
-            authContext?.setAuth({
-                loading:false,
-                authenticated:false
+        }).catch((error) => {
+            setAuth({
+                loading: false,
+                authenticated: false
             })
         })
     }

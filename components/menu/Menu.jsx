@@ -1,7 +1,7 @@
 import { ListItemIcon } from '@mui/material'
 import React from 'react'
 import { Box } from '../../shared/Box'
-import { MenuBlogIcon, MenuCategoriesIcon, MenuCollapseIcon, MenuExpandIcon, MenuHomeIcon } from '../../shared/Icons'
+import { MenuAboutIcon, MenuBlogIcon, MenuCategoriesIcon, MenuCollapseIcon, MenuExpandIcon, MenuHomeIcon, MenuLoginIcon, MenuSignUpIcon } from '../../shared/Icons'
 import { List, ListItem, ListItemButton, ListItemText } from '../../shared/List'
 import styled from "styled-components";
 import { Typography } from '../../shared/Typography'
@@ -12,6 +12,8 @@ import { HeaderMenuData } from '../../recoil/headerData/HeaderMenuDataAtom'
 import { useState } from 'react'
 import { Collapse } from '../../shared/Collapse'
 import { CategoryListData } from '../../recoil/categoryList/CategoryListAtom'
+import { useContext } from 'react'
+import { AuthContext } from '../../auth/AuthProvider'
 
 const NavLink = styled(Typography)`
     &&{
@@ -34,6 +36,7 @@ const Menu = () => {
     const [currMenu, setCurrMenu] = useRecoilState(HeaderMenuData);
     const [showCategories, setShowCategories] = useState(false);
     const [categories, setCategories] = useRecoilState(CategoryListData);
+    const authContext = useContext(AuthContext);
 
     const changeRoute = (path)=>{
         router.push(path)
@@ -69,7 +72,7 @@ const Menu = () => {
                     </List>
                 </Collapse>
                 <ListItemButton onClick={() => changeRoute(`/about`)}>
-                    <ListItemIcon><MenuHomeIcon /></ListItemIcon>
+                    <ListItemIcon><MenuAboutIcon /></ListItemIcon>
                     <ListItemText>
                         <NavLink>About Us</NavLink>
                     </ListItemText>
@@ -80,6 +83,22 @@ const Menu = () => {
                         <NavLink>Blog</NavLink>
                     </ListItemText>
                 </ListItemButton>
+                {!authContext.auth.authenticated&&(
+                    <>
+                        <ListItemButton onClick={() => changeRoute(`/login`)}>
+                            <ListItemIcon><MenuLoginIcon /></ListItemIcon>
+                            <ListItemText>
+                                <NavLink>Login</NavLink>
+                            </ListItemText>
+                        </ListItemButton>
+                        <ListItemButton onClick={() => changeRoute(`/sign-up`)}>
+                        <ListItemIcon><MenuSignUpIcon /></ListItemIcon>
+                            <ListItemText>
+                                <NavLink>Sign Up</NavLink>
+                            </ListItemText>
+                        </ListItemButton>
+                    </>
+                )}
             </List>
         </Box>
     )
