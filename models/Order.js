@@ -34,7 +34,10 @@ const AdditionalChargeSchema = new Schema({
 })
 
 const AddressSchema = new Schema({
-    address:String,
+    address:{
+        type:String,
+        default:''
+    },
     contact:String,
     latitude:Number,
     longitude:Number,
@@ -73,7 +76,7 @@ const OrderSchema = new Schema({
     },
     status: {
         type:String,
-        enum:["in-cart", "waiting", "confirmed", "process", "in-delivery", "delivered", "confirmed", "cancelled"],
+        enum:["in-cart", "waiting", "process", "in-delivery", "delivered", "completed", "cancelled"],
         default:"in-cart"
     }
 },{
@@ -96,6 +99,14 @@ OrderSchema.virtual('cartTotal').get(function (){
     let total = 0;
     this.cartItems.map((i)=>{
         total+=i.subTotal
+    })
+    return total;
+})
+
+OrderSchema.virtual('totalQuantity').get(function (){
+    let total = 0;
+    this.cartItems.map((i)=>{
+        total+=i.quantity
     })
     return total;
 })

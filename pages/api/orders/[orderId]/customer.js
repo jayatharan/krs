@@ -26,6 +26,7 @@ async function handler(req, res) {
                     throw new Error("Not Found");
                 }
                 if(data.request != undefined) order.request = data.request;
+                if(data.address != undefined) order.address = data.address;
                 if(data.deliveryDate != undefined) {
                     order.deliveryDate = data.deliveryDate
                 }

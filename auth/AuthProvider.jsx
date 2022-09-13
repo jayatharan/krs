@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect } from 'react'
 import AuthApi from '../apis/AuthApi';
 import { setAuthHeader } from "../apis/AxiosInstance";
 import OrderApi from '../apis/OrderApi';
-import { getCookie, setCookie } from "../utils/CookieAccess";
+import { deleteCookie, getCookie, setCookie } from "../utils/CookieAccess";
 import { useSetRecoilState } from 'recoil'
 import { CategoryListData } from '../recoil/categoryList/CategoryListAtom';
 import CategoryApi from '../apis/CategoryApi';
@@ -55,9 +55,8 @@ const AuthProvider = ({children}) => {
             }
             OrderApi.initiateOrderAsync(data).then(response => {
                 setOrder(response.data);
-                if(response.data._id != orderId){
-                    setCookie('order-id', response.data._id, 12)
-                }
+                deleteCookie('order-id');
+                setCookie('order-id', response.data._id, 12)
             })
             CategoryApi.getCategoriesAsync().then(response => {
                 setCategoryListData(response.data);

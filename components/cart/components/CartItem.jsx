@@ -11,6 +11,7 @@ import { AddIcon, BuyCloseIcon, LeftIcon, MinusIcon, RemoveIcon, RightIcon } fro
 import OrderApi from '../../../apis/OrderApi';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { CurrencyFormatter } from '../../../utils/StringProcess';
+import { useRouter } from 'next/router';
 
 const CartItemContainer = styled(Box)`
     margin-bottom:15px;
@@ -56,11 +57,12 @@ const CartItemActionBox = styled(Box)`
     }
 `
 
-const CartItem = ({cartItem, confirmOrder}) => {
-    const authContext = useContext(AuthContext);
+const CartItem = ({cartItem, confirmOrder=false, orderId, updateContext=false}) => {
 
     const [showActionButtons, setShowActionButtons] = useState(false);
     const [loading, setLoading] = useState(false);
+    const authContext = useContext(AuthContext)
+    const router = useRouter();
 
     const cartItemAction = (type)=>{
         setLoading(true)
@@ -72,9 +74,13 @@ const CartItem = ({cartItem, confirmOrder}) => {
         }else if(type == 'remove'){
             data.quantity=0
         }
-        const order = authContext.order;
-        OrderApi.addToCart(order._id, data).then(response=>{
-            authContext.setOrder(response.data);
+
+        OrderApi.addToCart(orderId, data).then(response=>{
+            if(updateContext){
+                authContext.setOrder(response.data);
+            }else{
+                router.reload(window.location.pathname)
+            }
         })
     }
 

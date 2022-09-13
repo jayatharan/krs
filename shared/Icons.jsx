@@ -20,6 +20,12 @@ import InfoIcon from '@mui/icons-material/Info';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { COLORS } from '../application/constants/AppConstants';
+import InsertInvitationIcon from '@mui/icons-material/InsertInvitation';
+
+export const MenuOrderIcon = styled(InsertInvitationIcon)`
+    color:#3C1404;
+    font-size:25px;
+`;
 
 export const RemoveIcon = styled(DeleteIcon)`
 color:${COLORS.secondary.red};

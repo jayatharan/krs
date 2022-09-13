@@ -92,13 +92,15 @@ const Header = () => {
                     <Typography sx={{position:'absolute', left:'100px'}}>LOGO</Typography>
                     <Box sx={{display:'flex', alignItems:'center'}}>
                         <NavLink style={key === '' ? styleNavActive : undefined} onClick={() => router.push(`/`)}>HOME</NavLink>
-                        <NavLink>ABOUT US</NavLink>
-                        <NavLink>BLOG</NavLink>
-                        {!authContext.auth.authenticated&&(
+                        <NavLink style={key === 'about' ? styleNavActive : undefined} onClick={() => router.push(`/about`)}>ABOUT US</NavLink>
+                        <NavLink style={key === 'blog' ? styleNavActive : undefined} onClick={() => router.push(`/blog`)}>BLOG</NavLink>
+                        {!authContext.auth.authenticated?(
                             <>
                                 <NavLink style={key === 'login' ? styleNavActive : undefined} onClick={() => router.push(`/login`)}>LOGIN</NavLink>
                                 <NavLink style={key === 'sign-up' ? styleNavActive : undefined} onClick={() => router.push(`/sign-up`)}>SIGN UP</NavLink>
                             </>
+                        ):(
+                            <NavLink style={key === 'my-orders' ? styleNavActive : undefined} onClick={() => router.push(`/my-orders`)}>MY ORDERS</NavLink>
                         )}
                     </Box>
                     <IconButton sx={{position:'absolute', right:'100px'}} onClick={()=>toggleDrawer('cart')}>

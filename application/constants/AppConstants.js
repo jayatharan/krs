@@ -25,3 +25,13 @@ export const COLORS = {
         navLink:'#414141'
     }
 }
+
+export const ORDER_STATUS = {
+    "in-cart":"In Cart",
+    "waiting":"Waiting for Confirmation",
+    "process":"Processing",
+    "in-delivery":"In Delivery",
+    "delivered":"Order Delivered",
+    "completed":"Order Completed",
+    "cancelled":"Order Cancelled"
+}

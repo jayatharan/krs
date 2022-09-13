@@ -1,7 +1,7 @@
 import { ListItemIcon } from '@mui/material'
 import React from 'react'
 import { Box } from '../../shared/Box'
-import { MenuAboutIcon, MenuBlogIcon, MenuCategoriesIcon, MenuCollapseIcon, MenuExpandIcon, MenuHomeIcon, MenuLoginIcon, MenuSignUpIcon } from '../../shared/Icons'
+import { MenuAboutIcon, MenuBlogIcon, MenuCategoriesIcon, MenuCollapseIcon, MenuExpandIcon, MenuHomeIcon, MenuLoginIcon, MenuOrderIcon, MenuSignUpIcon } from '../../shared/Icons'
 import { List, ListItem, ListItemButton, ListItemText } from '../../shared/List'
 import styled from "styled-components";
 import { Typography } from '../../shared/Typography'
@@ -83,7 +83,7 @@ const Menu = () => {
                         <NavLink>Blog</NavLink>
                     </ListItemText>
                 </ListItemButton>
-                {!authContext.auth.authenticated&&(
+                {!authContext.auth.authenticated?(
                     <>
                         <ListItemButton onClick={() => changeRoute(`/login`)}>
                             <ListItemIcon><MenuLoginIcon /></ListItemIcon>
@@ -95,6 +95,15 @@ const Menu = () => {
                         <ListItemIcon><MenuSignUpIcon /></ListItemIcon>
                             <ListItemText>
                                 <NavLink>Sign Up</NavLink>
+                            </ListItemText>
+                        </ListItemButton>
+                    </>
+                ):(
+                    <>
+                        <ListItemButton onClick={() => changeRoute(`/my-orders`)}>
+                            <ListItemIcon><MenuOrderIcon /></ListItemIcon>
+                            <ListItemText>
+                                <NavLink>My Orders</NavLink>
                             </ListItemText>
                         </ListItemButton>
                     </>

@@ -90,25 +90,27 @@ const IndividualProduct = ({product}) => {
 
     return (
         <PageContainer>
-            <Box maxWidth={'md'} sx={{padding:'10px', paddingY:'40px', marginX:'auto', background:COLORS.primary.white}}>
-                <Grid container spacing={3}>
-                    <Grid xs={12} sm={12} md={6} item>
-                        <Image alt={product.name} width={1000} height={1000} src={`/uploads/${product.image?product.image:'product-default.png'}`} />
+            <Box sx={{paddingTop:'30px'}}>
+                <Box maxWidth={'md'} sx={{padding:'10px', paddingY:'40px', marginX:'auto', background:COLORS.primary.white}}>
+                    <Grid container spacing={3}>
+                        <Grid xs={12} sm={12} md={6} item>
+                            <Image alt={product.name} width={1000} height={1000} src={`/uploads/${product.image?product.image:'product-default.png'}`} />
+                        </Grid>
+                        <Grid xs={12} sm={12} md={6} item>
+                            <Box>
+                                <ProductNameText>{product.name}</ProductNameText>
+                                <ProductSizeText>{product.size}</ProductSizeText>
+                                <ProductPriceText>{CurrencyFormatter.format(product.price)}</ProductPriceText>
+                                {product.discount.type!='no'&&(
+                                    <ProductDiscountPriceText>{CurrencyFormatter.format(product.originalPrice)}</ProductDiscountPriceText>
+                                )}
+                                <ProductDescriptionText>{product.description}</ProductDescriptionText>
+                                <Divider sx={{marginY:3}} />
+                                <Button sx={{paddingY:2}} variant='contained' color='secondary' onClick={addToCart} endIcon={<Badge badgeContent={cartItem?cartItem.quantity:0} ><AddToCartIcon /></Badge>} >Add to Cart</Button>
+                            </Box>
+                        </Grid>
                     </Grid>
-                    <Grid xs={12} sm={12} md={6} item>
-                        <Box>
-                            <ProductNameText>{product.name}</ProductNameText>
-                            <ProductSizeText>{product.size}</ProductSizeText>
-                            <ProductPriceText>{CurrencyFormatter.format(product.price)}</ProductPriceText>
-                            {product.discount.type!='no'&&(
-                                <ProductDiscountPriceText>{CurrencyFormatter.format(product.originalPrice)}</ProductDiscountPriceText>
-                            )}
-                            <ProductDescriptionText>{product.description}</ProductDescriptionText>
-                            <Divider sx={{marginY:3}} />
-                            <Button sx={{paddingY:2}} variant='contained' color='secondary' onClick={addToCart} endIcon={<Badge badgeContent={cartItem?cartItem.quantity:0} ><AddToCartIcon /></Badge>} >Add to Cart</Button>
-                        </Box>
-                    </Grid>
-                </Grid>
+                </Box>
             </Box>
         </PageContainer>
     )

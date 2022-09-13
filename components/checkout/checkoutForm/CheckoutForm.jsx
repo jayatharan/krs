@@ -10,9 +10,8 @@ import {Button} from '../../../shared/Button';
 import { Box } from '../../../shared/Box';
 import { useRouter } from 'next/router';
 import OrderApi from '../../../apis/OrderApi';
-import DateTimePicker from '../../../shared/DateTimePicker';
 import FormikDateTimeField from '../../../shared/formikFields/FormikDateTimeField';
-import { getCookie, setCookie } from '../../../utils/CookieAccess';
+import { deleteCookie, setCookie } from '../../../utils/CookieAccess';
 
 const {
     mobile,
@@ -25,14 +24,17 @@ const CheckoutForm = () => {
     const formikRef = useRef(null);
     const authContext = useContext(AuthContext);
     const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (values, actions) => {
-        const order = authContext.order
+        const order = {...authContext.order}
         OrderApi.customer(order._id, values)
         .then(response=>{
+            deleteCookie('order-id');
             OrderApi.initiateOrderAsync({}).then(res => {
                 authContext.setOrder(res.data);
                 setCookie('order-id', response.data._id, 12)
+                router.push(`/order/${order._id}`);
             })
         }).catch((error)=>{
 

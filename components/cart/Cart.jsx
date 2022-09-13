@@ -9,7 +9,6 @@ import CartItem from './components/CartItem';
 import { CartIcon, ConfirmIcon, RightIcon } from '../../shared/Icons';
 import { Button } from '../../shared/Button';
 import { Collapse } from '../../shared/Collapse';
-import CheckoutForm from './components/checkoutForm/CheckoutForm';
 import { useRouter } from 'next/router';
 import { HeaderMenuData } from '../../recoil/headerData/HeaderMenuDataAtom';
 import {useRecoilState} from "recoil";
@@ -45,27 +44,6 @@ const Cart = ({checkout=false}) => {
     const [confirmOrder, setConfirmOrder] = useState(false)
     const router = useRouter()
     const [currMenu, setCurrMenu] = useRecoilState(HeaderMenuData);
-    const [total, setTotal] = useState({
-        quantity:0,
-        amount:0
-    })
-    
-    useEffect(()=>{
-        let quantity = 0
-        let amount = 0
-
-        if(authContext.order){
-            authContext.order.cartItems.map(i => {
-                quantity += i.quantity
-                amount += (i.quantity*i.price)
-            })
-        }
-
-        setTotal({
-            quantity, 
-            amount
-        })
-    },[authContext])
 
     return (
         <Box>
@@ -78,11 +56,11 @@ const Cart = ({checkout=false}) => {
                 {authContext.order && (
                     <>
                         {authContext.order.cartItems.map(i=>(
-                            <CartItem key={i._id} cartItem={i} confirmOrder={confirmOrder} />
+                            <CartItem key={i._id} cartItem={i} confirmOrder={confirmOrder} orderId={authContext.order._id} updateContext={true} />
                         ))}
                         <CartTotalContainer>
-                            <CartTotalText>Total Qty : {total.quantity}</CartTotalText>
-                            <CartTotalText>Total : {CurrencyFormatter.format(total.amount)}</CartTotalText>
+                            <CartTotalText>Total Qty : {authContext.order.totalQuantity}</CartTotalText>
+                            <CartTotalText>Total : {CurrencyFormatter.format(authContext.order.cartTotal)}</CartTotalText>
                         </CartTotalContainer>
                         {(!checkout && !confirmOrder)&&(
                             <Button variant='outlined' disabled={authContext.order.cartItems.length==0} sx={{paddingY:1}} fullWidth={true} endIcon={<ConfirmIcon />} onClick={()=>{router.push('/checkout'); setCurrMenu('')}}>Confirm Order</Button>
