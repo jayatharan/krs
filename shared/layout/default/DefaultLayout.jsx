@@ -3,6 +3,7 @@ import Footer from './Footer/Footer'
 import Header from './Header/Header'
 import styled from "styled-components";
 import { Box } from '../../Box';
+import CarouselSlides from './CarouselSlides/CarouselSlides';
 
 const Body = styled(Box)`
     margin-top:70px;
@@ -15,6 +16,7 @@ const DefaultLayout = ({children}) => {
         <>
             <Header />
             <Body>
+                <CarouselSlides />
                 {children}
             </Body>
             <Footer />

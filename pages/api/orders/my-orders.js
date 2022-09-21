@@ -18,7 +18,10 @@ async function handler(req, res){
                 }
                 const p = Number.parseInt(page)
                 const l = Number.parseInt(limit)
-                const orders = await Order.find(filter).limit(l).skip((p-1)*l).sort({'createdAt': -1})
+                const orders = await Order.find({$and:[
+                    {filter},
+                    {status:{$ne:'in-cart'}}
+                ]}).limit(l).skip((p-1)*l).sort({'createdAt': -1})
                 res.status(200).json({ success: true, data: orders})
             } catch (error) {
                 res.status(400).json({ success: true, error })

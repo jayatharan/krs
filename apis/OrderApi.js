@@ -29,6 +29,10 @@ class OrderApiImpl extends BaseApi {
     async customer(id, data){
         return await this.putAsync(`orders/${id}/customer`, {}, data);
     }
+
+    async myOrders(params){
+        return await this.getAsync('orders/my-orders',params);
+    }
 }
 
 const OrderApi = new OrderApiImpl();
